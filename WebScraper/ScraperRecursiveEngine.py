@@ -99,7 +99,6 @@ def visitor(index):
 	global found,visited
 	linkBuffer=list(found-visited)	
 	for i in linkBuffer:
-		# visited=set( read_this('visited.txt').split('\n') )
 		try:
 			currentPage=open_page(random.choice(linkBuffer)) #as well as update visited
 			# print('Thread-',i,'vi')
@@ -110,16 +109,6 @@ def visitor(index):
 		linkBuffer=list(found-visited)	
 
 	pass
-
-# explor1=threading.Thread(target=explorer,)
-# explor1.start()
-# explor2=threading.Thread(target=explorer,)
-# explor2.start()
-# explor3=threading.Thread(target=explorer,)
-# explor3.start()
-# explor4=threading.Thread(target=explorer,)
-# explor4.start()
-
 
 threadBoard=[]
 threadCount=25
