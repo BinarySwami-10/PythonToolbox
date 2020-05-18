@@ -64,13 +64,6 @@ def dict_shrink(replacementDict):
 	return replacementDict
 	pass
 
-def file_magick_open(contains):
-	filelist=os.listdir()
-	for i in range(len(filelist)):
-		if contains in filelist[i]:
-			filename=filelist[i];
-			print('|i=',i,filelist[i])
-	return filename
 
 def make_blobs(path,pieces):
 	arr=read_this(path).split()
