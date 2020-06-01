@@ -28,9 +28,6 @@ questionContainingClass='freebirdFormviewerViewItemsItemItemTitleContainer'
 markup=read_this('page.html') #this must come first before get questions function
 QuestionQueryList=getQuestionsFromClass(questionContainingClass).split('\n')
 
-so=soup(markup).text
-
-print (so)
 
 googlize=list(map(lambda i:'https://www.google.com/search?q='+i.replace("'","") , QuestionQueryList))
 print(googlize)
