@@ -11,6 +11,7 @@ it in browser and copy the content of <body> tag and paste it in page.html file 
 
 open page.html so that you will understand why. its the raw content of body tag.
 For more instruction see the code. documentation is done in comments.
+JUST run the examSolver.py file in CMD or powershell or BASH(linux).
 
 
 IMPORTANT REQUIREMENTS:
