@@ -1,11 +1,12 @@
-import html5lib,requests,random,pyautogui,time,clipboard
-import threading
+import html5lib,requests,time,threading,selenium
+from selenium import webdriver
 from bs4 import BeautifulSoup as soup
 
 def imgDownload(url,name):
 	img_data = requests.get(url).content
-	with open('quotes\\'+name, 'wb') as handler:
+	with open(str(name)+'.jpg', 'wb') as handler:
 	    handler.write(img_data)
+	print('downloaded :'+url)
 
 def write_this(fname,content):
 	f=open(fname,"+ab")
@@ -16,22 +17,36 @@ def open_page(url):
 	fullText=requests.get(url,headers=headers).text
 	return fullText
 
-def get_img(Pagetext):
-	soups=soup(Pagetext,features="html5lib")
-	IMG=soups.findAll("img")
-	imlist=[i.get('data-src') for i in IMG]
-	return imlist
+def get_imgs(Pagetext):
+	arr=page.split("'")
+	url=[x for x in arr if ('png' in x) or ('jpg' in x) and ('http' in x) ]
+	# soups=soup(Pagetext,features="html5lib")
+	return url
 
-page=open_page('https://www.goodhousekeeping.com/health/wellness/g2401/inspirational-quotes/')
-imgarray=get_img(page)
-filtered=[str(x) for x in imgarray if True ]
+wd = webdriver.Firefox()
+page=wd.get('https://pixabay.com/images/search/nature/')
+# print(page)
 
-c=0
-for i in filtered:
-	try:
-		imgDownload(i,'inspirational-'+str(c)+'.png')
-		c+=1
-	except :
-		print('FAILED : ',i)
-print(filtered)
+urlWheel=get_imgs(page)
 
+
+
+def hire_employer(work,workdata,employee_count):
+	workbench=[]
+	workslots=[workdata[i:i + employee_count] for i in range(0, len(workdata), employee_count)]
+
+	namer=0
+	for slot in workslots:
+		for j in slot:
+			workbench.append( threading.Thread( target=work, args=(j,namer) ) )
+			try:
+				workbench[namer].start()
+				workbench[namer].join()
+				namer+=1
+			except:
+				print('error occured')
+
+		time.sleep(0.5)
+
+
+# hire_employer(imgDownload,urlWheel,4)

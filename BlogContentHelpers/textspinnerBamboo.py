@@ -40,13 +40,13 @@ def sentenceFlip(paragraph):
 	for n in range(2,len(sentences)-1,2):
 		tmp=sentences[n]
 		sentences[n]=sentences[n+1]
-		sentences[n+1]=tmp
+		sentences[n+1]='\n\n'+tmp
 	return ' .'.join(sentences)
 	
-url='https://yoast.com/focus-on-long-tail-keywords/'
+url='https://www.wordstream.com/blog/ws/2014/06/30/commercial-intent-keywords '
 PageParagraph=get_p(open_page(url))
 ArticleAlpha=sentenceFlip(PageParagraph)
 time.sleep(2)
 
 print(ArticleAlpha,pyautogui.position())
-spinbotForwarder(ArticleAlpha)
+# spinbotForwarder(ArticleAlpha)
