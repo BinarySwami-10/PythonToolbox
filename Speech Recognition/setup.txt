@@ -1,0 +1,7 @@
+TYPE THIS IN CMD
+---------------------------------------
+pip install speechrecognition
+pip install pipwin
+pipwin install pyaudio
+---------------------------------------
+now run/build/execute the code as usual.
