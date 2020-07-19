@@ -11,14 +11,12 @@ except :
 	os.system('pip install pyautogui')
 
 def getProgramID(ProgramName):
-	#need to enter full program name
 	hwndMain = win32gui.FindWindow(None,ProgramName)
 	hwndChild = win32gui.GetWindow(hwndMain, win32con.GW_CHILD)
 	print(hwndMain,hwndChild)
 	return hwndMain,hwndChild
 
 def sendKey2Program(ID,key):
-	# ID=String KEY=some_keyboard_key
 	#Params: id, method, key, times
 	temp = win32api.SendMessage(ID, win32con.WM_CHAR, ord(key), 1) 
 	pass
@@ -28,25 +26,15 @@ def getObjectMethods(object):
 	methods= list (filter (lambda x:"__" not in x, allMethods))
 	print(methods)
 
-def pauseMiner():
-	sendKey2Program(ID,'p')
 
-def playMiner():
-	sendKey2Program(ID,'r')
+theProgram=pyautogui.getWindowsWithTitle('GIMP' and 'layers')
+title=list(map(lambda x: x.title, theProgram))[0]
 
-#Fuzzy search all Titles
-windowNames=pyautogui.getWindowsWithTitle('xmrig 6') 
+theProgramID=getProgramID(title)
+print(title)
 
-# get id of searched title by using internal method _hwnd 
-ID=windowNames[0]._hWnd
+sendKey2Program(theProgramID[0],'A')
 
-while True:
-	if pyautogui.getWindowsWithTitle('task'):
-		print ('task O ba open')
-		pauseMiner()
-	else:
-		playMiner()
-	time.sleep(1)
 
 
 
