@@ -28,10 +28,10 @@ def getObjectMethods(object):
 	methods= list (filter (lambda x:"__" not in x, allMethods))
 	print(methods)
 
-def pauseMiner():
+def pauseMiner(ID):
 	sendKey2Program(ID,'p')
 
-def playMiner():
+def playMiner(ID):
 	sendKey2Program(ID,'r')
 
 #Fuzzy search all Titles
@@ -39,13 +39,14 @@ windowNames=pyautogui.getWindowsWithTitle('xmrig 6')
 
 # get id of searched title by using internal method _hwnd 
 ID=windowNames[0]._hWnd
+print(ID)
 
 while True:
 	if pyautogui.getWindowsWithTitle('task'):
-		print ('task O ba open')
-		pauseMiner()
+		print ('task O ba open',ID)
+		pauseMiner(ID)
 	else:
-		playMiner()
+		playMiner(ID)
 	time.sleep(1)
 
 
