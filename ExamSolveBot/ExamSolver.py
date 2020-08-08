@@ -25,9 +25,8 @@ questionContainingClass='freebirdFormviewerViewItemsItemItemTitleContainer'
 #important: Copy paste the html of page containing questions as it is. just copy the content of body tag
 # and put in the page.html file so the code reads it and extract the questions from the class == questionContainingClass
 
-markup=read_this('page.html') #this must come first before get questions function
+markup=read_this('page.html') #loads the markup webpage content from html.
 QuestionQueryList=getQuestionsFromClass(questionContainingClass).split('\n')
-
 
 googlize=list(map(lambda i:'https://www.google.com/search?q='+i.replace("'","") , QuestionQueryList))
 print(googlize)
