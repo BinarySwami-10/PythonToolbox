@@ -66,33 +66,41 @@ def filterAllowedList(list_input):
 
 	return filtered
 
-#checkpoint Preloading
+#SETUP
+FILENAME='CrawledData.txt'
+SpeedMultiplier=25
+
+#DECLARATION
+#these are the memory files of this engine
+#to keep track of which website was visited
 found=set( read_this('found.txt').split('\n') )
 visited=set( read_this('visited.txt').split('\n') )
 
-print("-> visited Dictonary Length :: {}\n-> Pending Urls :: {}" \
-	.format(visited.__len__(),found.__len__()) )
-# REMOVE REPETITIONS # REMOVE REPETITIONS
+#STATUS CHECK
+print("-> visited Dictonary Length :: {}\n-> Pending Urls :: {}".format(visited.__len__(),found.__len__()) )
+
+#INITIALIZATION
 linkBuffer=list(found-visited)
+
+#Filter
 onlyVisit=['www.huffpost.com','www.huffingtonpost.in']
 
 def explorer():
+	#softly scans the webpage and builds an index of which url to visit
 	global linkBuffer,onlyVisit
 	global found,visited
 	linkBuffer=list(found-visited)	
 	for i in linkBuffer:
-
 		try:
-			currentPage=open_page(random.choice(linkBuffer)) #as well as update visited
+			currentPage=open_page(random.choice(linkBuffer))
 		except Exception as s:
 			print(s)
 			pass
-		write_this('huffpostData.txt', get_p(currentPage)+'\n\n' )
-		lHolder=filterAllowedList( get_links(currentPage) ) #filter the list accord Condition
-		# print(lHolder)
-		update_found(lHolder)  #set Found's Update
+		write_this(FILENAME, get_p(currentPage)+'\n\n' )
+		lHolder=filterAllowedList( get_links(currentPage) ) 
+		update_found(lHolder)
 		linkBuffer=list(found-visited)	
-pass
+
 
 def visitor(index):
 	global linkBuffer
@@ -100,9 +108,8 @@ def visitor(index):
 	linkBuffer=list(found-visited)	
 	for i in linkBuffer:
 		try:
-			currentPage=open_page(random.choice(linkBuffer)) #as well as update visited
-			# print('Thread-',i,'vi')
-			write_this('huffpostData.txt', get_p(currentPage)+'\n\n' )
+			currentPage=open_page(random.choice(linkBuffer))
+			write_this(FILENAME, get_p(currentPage)+'\n\n' )
 		except :
 			print('page skipped')
 			pass
@@ -110,10 +117,10 @@ def visitor(index):
 
 	pass
 
-threadBoard=[]
-threadCount=25
 
-for i in range(threadCount):
+#START
+threadBoard=[]
+for i in range(SpeedMultiplier):
 	threadBoard.append(threading.Thread(target=visitor,args=(i,) ))
 	threadBoard[i].start()
 	print('Thread-',i,' HasBeenStarted')
