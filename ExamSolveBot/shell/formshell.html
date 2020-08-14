@@ -1,0 +1,64 @@
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous">	
+</script>
+
+<div id="auth" style="position:fixed;    padding:0;margin:0;top:0;left:0;width: 100%;height: 100%;background:#000c;">
+	<button id="rmv_log">CLEAR LOGS AND MODIFIED HISTORY</button>
+	<h1 style="color: #0ff">ENTER YOUR NAME PLEASE</h1>
+    <button class="prefill">nikhil</button>
+    <button class="prefill">ajay</button>
+    <button class="prefill">bhavishya</button>
+    <button class="prefill">ritika</button>
+    <button class="prefill">rohan</button>
+    <button class="prefill">roy</button>
+    <br>
+
+    <input id="username" type="text" name="" placeholder="YourNameHere">
+    <button class="close">SUBMIT</button>
+</div>
+<script type="text/javascript">
+	$('#rmv_log').click(function(event) {
+		$('.log').remove();
+	});
+
+
+	$('.prefill').click(function(event) {
+		$('#username').val($(this).text());
+		localStorage.setItem('name', $(this).text());
+		name=localStorage.getItem('name');
+	});
+
+	$('.close').click(function(event) {
+		$('#auth').toggle(300)
+	});
+
+
+		html1=$('html').html();
+
+	$('.freebirdFormviewerViewItemsCheckboxChoice .freebirdThemedCheckbox ').click(function(event) {
+		log='<span class"log">'+"->"+name+'</span>';
+
+
+		$(this).toggleClass('isChecked');;
+		$('.quantumWizTogglePapercheckboxEl   ').css('border-color', '#000');
+		optionParent=$(this).parent().parent().parent().parent();
+		optionParent.append(log);
+
+		optval=optionParent.children('input').attr('disabled')
+		console.log(optval) ;
+		// if (optval == 'true') {};	
+		$(this).attr("aria-checked", "true");
+
+		setTimeout(function () {console.log('timeout Worked')		}, 1000)
+		$('html').html($('html').html());
+		$.post('./gf.php', {data: $('html').html()}, function(data, textStatus, xhr) {
+			alert(xhr)
+		});
+		
+	});
+
+
+
+
+		// newWindow2.document.write(html2);
+		// html=$('html').html();
+</script>
