@@ -115,7 +115,7 @@ def _plot(wavefn):
     win.close()
 
 
-def generate_tone(wavefn=squarewave, freq=440, duration=1, amp=1,postInterval=0):
+def generate_tone(wavefn=sinewave, freq=440, duration=1, amp=1,postInterval=0):
     """Create a tone with given characteristics
 
     params: wavefn is a standard wave function, frequency is in hz,
@@ -144,9 +144,7 @@ def generate_tone(wavefn=squarewave, freq=440, duration=1, amp=1,postInterval=0)
 
 def decayfilter(samples, decaytime=.5, SAMPLERATE=44100):
     """ Exponential taper of signal amplitude
-
     pre: decaytime > 0
-
     post: Values in samples have been decreased with increasing
           damping from the begining to end. The rate of damping is
           determined by decaytime, which is the half-life of the
@@ -160,10 +158,8 @@ def decayfilter(samples, decaytime=.5, SAMPLERATE=44100):
 
 def volumefilter(samples, factor=.75):
     """ Adjust the amplitude of entire sample uniformly.
-
     pre: factor > 0
     post: Every sample in samples has been multiplied by factor.
-
     note: factor > 1.0 amplifies while factor < 1.0 decreases volume.
     """
     for i in range(len(samples)):
@@ -242,6 +238,20 @@ def _play_sound_windows(samples):
                        winsound.SND_FILENAME & winsound.SND_ASYNC)
     # os.remove("temp.wav")
 
+def confCronJob():
+    import threading,os,signal
+    def check():
+        while True:
+            print("checking")
+            conf=config()
+            time.sleep(2)
+            if conf.status == 0:
+                # os._exit(1)
+                os.kill(os.getpid(),signal.SIGABRT)
+                pass
+    checker=threading.Thread(target=check)
+    checker.start()
+        
 
 # define play_sound to be the platform appropriate function
 
@@ -255,10 +265,9 @@ elif sys.platform == "darwin":
 import random
 
 def MySound():
-    soundDurationArray=     [0.15,0.15,0.15,0.15, 0.15,0.15,0.15,0.15, ]
-    soundIntervalArray=     [0.1,0.1,0.1,0.1, 0.1,0.1,0.1,0.1, ]
-    soundFreqArray=         [100,200,400,200,     150,250,300,250,  ]
-
+    soundDurationArray=     [0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10, 0.15,  0.10,  0.10,        ]
+    soundIntervalArray=     [0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, 0.15,  0.15,  0.15,        ]
+    soundFreqArray=         [300 ,  300 ,  400 ,  400 ,  250 ,  250 ,  300 ,  300 , 250 ,  800 ,  800,         ]
     ToneBuilder=[]
     for i,v in enumerate(soundDurationArray):
         ToneBuilder.extend(generate_tone(freq=soundFreqArray[i],duration=v,postInterval=soundIntervalArray[i])) 
@@ -266,9 +275,26 @@ def MySound():
 
     play_sound(ToneBuilder)
 
+class config:
+    def __init__(self):
+        self.cfile="config.json"
+        self.interval= self.getconf()['interval']
+        self.status = self.getconf()['status']
+
+    def getconf(self):
+        return mx.jload(self.cfile)
+
+
 if __name__ == "__main__":
-    Hours=48
-    for i in range (12*Hours):
-        print('running',i)
+    from mxproxy import mx
+    begin=time.monotonic()
+    conf=config()
+    confCronJob()
+    while conf.status==True:
         MySound()
-        time.sleep(120)
+        # exit()
+        print('since {:0.4f} seconds'.format(time.monotonic()-begin))
+        time.sleep(conf.interval)
+        conf=config()
+
+
