@@ -1,4 +1,3 @@
-
 import sys
 success=0
 importlevel=""
@@ -16,10 +15,3 @@ for i in range(4):
 			importlevel=importlevel + "../"
 	else:
 		pass
-
-		
-
-
-
-
-

@@ -197,8 +197,7 @@ def _bytestream(samples):
 # play_sound is set to the appropriate function for platform so that
 # calling play_sound(tone_samples) should work most machines.
 
-# WARNING: on Windows and MacOs the play_sound creates (and then DELETES)
-#          a file called "temp.wav"
+
 
 def _play_sound_linux(samples):
     """Play sound on Linux system
@@ -238,20 +237,6 @@ def _play_sound_windows(samples):
                        winsound.SND_FILENAME & winsound.SND_ASYNC)
     # os.remove("temp.wav")
 
-def confCronJob():
-    import threading,os,signal
-    def check():
-        while True:
-            print("checking")
-            conf=config()
-            time.sleep(2)
-            if conf.status == 0:
-                # os._exit(1)
-                os.kill(os.getpid(),signal.SIGABRT)
-                pass
-    checker=threading.Thread(target=check)
-    checker.start()
-        
 
 # define play_sound to be the platform appropriate function
 
@@ -264,6 +249,26 @@ elif sys.platform == "darwin":
     play_sound = _play_sound_mac
 import random
 
+def confCronJob():
+    import threading,os,signal
+    def check():
+        while True:
+            try:
+                print("..",end="")
+                conf=config()
+                time.sleep(2)
+                if conf.status == 0:
+                    c=conf.getconf()
+                    c["status"]=1
+                    mx.jdump(c,conf.cfile)
+                    # os._exit(1)
+                    os.kill(os.getpid(),signal.SIGABRT)
+            except Exception as e:
+                print(e)
+
+    checker=threading.Thread(target=check)
+    checker.start()
+        
 def MySound():
     soundDurationArray=     [0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10,  0.10, 0.15,  0.10,  0.10,        ]
     soundIntervalArray=     [0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05,  0.05, 0.15,  0.15,  0.15,        ]
@@ -292,7 +297,6 @@ if __name__ == "__main__":
     confCronJob()
     while conf.status==True:
         MySound()
-        # exit()
         print('since {:0.4f} seconds'.format(time.monotonic()-begin))
         time.sleep(conf.interval)
         conf=config()
