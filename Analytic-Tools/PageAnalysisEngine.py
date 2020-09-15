@@ -3,6 +3,7 @@ import html5lib
 from mxproxy import mx
 from bs4 import  BeautifulSoup as soup
 
+
 class Grammar:
 	commonWords='the at there some my of be use her than and this an would first a have each make water to from which like been in or she him call is one do into who you had how time oil that by their has its it word if look now he but will two find was not up more long for what other write down on all about go day are were out see did as we many number get with when then no come his your them way made they can these could may I said so people part'.split()
 
@@ -36,9 +37,10 @@ class Page:
 	#tag or selector supported by beautiful soup
 		return "".join( [x.text for x in self.soup.findAll(tag)] )
 
+if __name__ == '__main__':
+	url="https://www.investopedia.com/terms/c/credit.asp"
+	page=Page(url)
 
-url="https://www.investopedia.com/terms/c/credit.asp"
-page=Page(url)
-
-count=page.stats.wordCount
-print(count)
+	count=page.stats.wordCount
+	print(count,)
+	mx.jdump({"test":100,"rest":10},"test.json")

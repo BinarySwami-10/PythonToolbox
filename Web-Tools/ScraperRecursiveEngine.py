@@ -47,10 +47,8 @@ def update_found(link_list):
 def allowedToVisit(i,inp):
 	flag=0
 	for x in inp:
-		if i == x :
-			flag=1
-		else:
-			pass
+		if i == x :	flag=1
+		else: pass
 	return flag
 
 def filterAllowedList(list_input):
@@ -60,30 +58,22 @@ def filterAllowedList(list_input):
 			try:
 				if i in j.split('/')[2]:
 					filtered.append(j)
-			except :
-				# print('bug during filter :: PAssed')
-				pass
-
+			except : pass
 	return filtered
 
 #SETUP
 FILENAME='CrawledData.txt'
 SpeedMultiplier=25
+onlyVisit=['https://www.livemint.com/']
 
 #DECLARATION
-#these are the memory files of this engine
-#to keep track of which website was visited
+#these are the memory files of this engine #to keep track of which website was visited
 found=set( read_this('found.txt').split('\n') )
 visited=set( read_this('visited.txt').split('\n') )
-
-#STATUS CHECK
-print("-> visited Dictonary Length :: {}\n-> Pending Urls :: {}".format(visited.__len__(),found.__len__()) )
-
-#INITIALIZATION
 linkBuffer=list(found-visited)
 
-#Filter
-onlyVisit=['www.huffpost.com','www.huffingtonpost.in']
+#STATUS CHECK
+print("visited={}\n  | Pending URLS {}".format(len(visited),len(found)) )
 
 def explorer():
 	#softly scans the webpage and builds an index of which url to visit
@@ -91,11 +81,9 @@ def explorer():
 	global found,visited
 	linkBuffer=list(found-visited)	
 	for i in linkBuffer:
-		try:
-			currentPage=open_page(random.choice(linkBuffer))
-		except Exception as s:
-			print(s)
-			pass
+		try: 	currentPage=open_page(random.choice(linkBuffer))
+		except 	Exception as s: print(s)
+
 		write_this(FILENAME, get_p(currentPage)+'\n\n' )
 		lHolder=filterAllowedList( get_links(currentPage) ) 
 		update_found(lHolder)
@@ -114,9 +102,6 @@ def visitor(index):
 			print('page skipped')
 			pass
 		linkBuffer=list(found-visited)	
-
-	pass
-
 
 #START
 threadBoard=[]
