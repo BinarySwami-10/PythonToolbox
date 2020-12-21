@@ -9,9 +9,6 @@ def make_settings(obj,savepath):
 	#dict 2 json
 	fp=open(savepath,'+w')
 	json.dump(obj,fp)
-	#
-# options={"interval":"10000","status":"1"}
-# make_settings(options,'config.json')
 
 
 def get_settings():
@@ -28,7 +25,7 @@ options=get_settings()
 while options["status"]:
 	try:
 		beeeep()
-		time.sleep(options['interval'])
+		time.sleep(60)
 		options=get_settings()
 
 	except Exception as e:
